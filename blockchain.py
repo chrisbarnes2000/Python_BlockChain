@@ -1,6 +1,8 @@
 import hashlib
 import json
+from uuid import uuid4
 from time import time
+from flask import Flask, jsonify
 
 class Blockchain(object):
     def __init__(self):
@@ -62,15 +64,39 @@ class Blockchain(object):
         guess_hash = hashlib.sha256(guess).hexigest()
         return guess_hash[:4] == "0000"
 
+# Creating the app node
+app = Flask(__name__)
+node_identifier = str(uuid4()).replace('-','')
+
+# Initializing blockchain
 blockchain = Blockchain()
-t1 = blockchain.new_transaction("Satoshi", "Mike", '5 BTC')
-t2 = blockchain.new_transaction("Mike", "Satoshi", '1 BTC')
-t3 = blockchain.new_transaction("Satoshi", "Hal", '5 BTC')
-blockchain.new_block(blockchain.proof, 12345)
+# t1 = blockchain.new_transaction("Satoshi", "Mike", '5 BTC')
+# t2 = blockchain.new_transaction("Mike", "Satoshi", '1 BTC')
+# t3 = blockchain.new_transaction("Satoshi", "Hal", '5 BTC')
+# blockchain.new_block(blockchain.proof, 12345)
 
-t4 = blockchain.new_transaction("Mike", "Alice", '1 BTC')
-t5 = blockchain.new_transaction("Alice", "Bob", '0.5 BTC')
-t6 = blockchain.new_transaction("Bob", "Mike", '0.5 BTC')
-blockchain.new_block(blockchain.proof, 6789)
+# t4 = blockchain.new_transaction("Mike", "Alice", '1 BTC')
+# t5 = blockchain.new_transaction("Alice", "Bob", '0.5 BTC')
+# t6 = blockchain.new_transaction("Bob", "Mike", '0.5 BTC')
+# blockchain.new_block(blockchain.proof, 6789)
 
-print("Genesis block: ", blockchain.chain)
+# print("Genesis block: ", blockchain.chain)
+
+@app.route('/mine', methods=['GET'])
+def mine():
+   return "Mining a new Block"
+
+@app.route('/transactions/new', methods=['POST'])
+def new_transaction():
+   return "Adding a new transaction"
+
+@app.route('/chain', methods=['GET'])
+def full_chain():
+   response = {
+       'chain' : blockchain.chain,
+       'length' : len(blockchain.chain)
+   }
+   return jsonify(response), 200
+
+if __name__ == '__main__':
+   app.run(host="0.0.0.0", port=5000)

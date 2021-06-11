@@ -12,10 +12,10 @@ Follow This Tutorial: [How To Build A Blockchain In Python?](https://101blockcha
 
 ## 2. API Integration
 
-- [ ] Add Flask App For HTTP Requests
-  - [ ] /mine endpoint
-  - [ ] /transactions/new endpoint
-  - [ ] /chain endpoint
+- [x] Add Flask App For HTTP Requests
+  - [x] /mine endpoint
+  - [x] /transactions/new endpoint
+  - [x] /chain endpoint
 - [ ] Mining Endpoint
   - [ ] Proof of Work calculation
   - [ ] Forge new blockchain and then add it to the chain
