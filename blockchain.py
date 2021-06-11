@@ -2,7 +2,7 @@ import hashlib
 import json
 from uuid import uuid4
 from time import time
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 class Blockchain(object):
     def __init__(self):
@@ -88,7 +88,17 @@ def mine():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-   return "Adding a new transaction"
+   def new_transaction():
+       values = request.get_json()
+       # Checking if the required data is there or not
+       required = ['sender','recipient','amount']
+       if not all(k in values for k in required):
+           return 'Missing values', 400
+
+       # creating a new transaction
+       index = blockchain.new_transaction(values['sender'], values['recipient', values['amount']])
+       response = {'message': f'Transaction is scheduled to be added to Block No. {index}'}
+       return jsonify(response), 201
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
