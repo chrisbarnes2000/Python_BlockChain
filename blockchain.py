@@ -61,7 +61,7 @@ class Blockchain(object):
     def valid_proof(last_proof, proof):
         """This method validates the block"""
         guess = f'{last_proof}{proof}'.encode()
-        guess_hash = hashlib.sha256(guess).hexigest()
+        guess_hash = hashlib.sha256(guess)   # .hexigest()
         return guess_hash[:4] == "0000"
 
 # Creating the app node
@@ -84,7 +84,29 @@ blockchain = Blockchain()
 
 @app.route('/mine', methods=['GET'])
 def mine():
-   return "Mining a new Block"
+   """Here we make the proof of work algorithm work"""
+   last_block = blockchain.last_block
+   last_proof = last_block['proof']
+   proof = blockchain.proof(last_proof)
+
+   # rewarding the miner for his contribution. 0 specifies new coin has been mined
+   blockchain.new_transaction(
+       sender="0",
+       recipient = node_identifier,
+       amount = 1,
+   )
+
+   # now create the new block and add it to the chain
+   previous_hash = blockchain.hash(last_block)
+   block = blockchain.new_block(proof, previous_hash)
+   response = {
+       'message': 'The new block has been forged',
+       'index': block['index'],
+       'transactions': block['transactions'],
+       'proof': block['proof'],
+       'previous_hash' : block['previous_hash']
+   }
+   return jsonify(response), 200
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():

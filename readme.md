@@ -16,10 +16,10 @@ Follow This Tutorial: [How To Build A Blockchain In Python?](https://101blockcha
   - [x] /mine endpoint
   - [x] /transactions/new endpoint
   - [x] /chain endpoint
-- [ ] Mining Endpoint
-  - [ ] Proof of Work calculation
-  - [ ] Forge new blockchain and then add it to the chain
-  - [ ] Reward the miner for his work
+- [x] Mining Endpoint
+  - [x] Proof of Work calculation
+  - [x] Forge new blockchain and then add it to the chain
+  - [x] Reward the miner for his work
 
 ## 3. Blockchain Interaction
 
